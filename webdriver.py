@@ -33,7 +33,7 @@ class WebDriver:
         if self._headless:
             options.add_argument('--headless')
         self._driver = webdriver.Firefox(options=options)
-        return self._driver
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._driver.quit()

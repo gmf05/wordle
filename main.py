@@ -9,7 +9,6 @@ from wordle.utils import web_feedback_to_information, combine_information
 def main(driver, solver, initial_guess):
 
     # first turn: submit initial guess
-    driver = WebDriver(headless=False, live=True)
     driver.start_game()
     time.sleep(2)
     driver.type_word(initial_guess)
@@ -49,8 +48,6 @@ def main(driver, solver, initial_guess):
         driver.submit()
         logging.info('TURN {}: Submission done!'.format(str(turn_number+1)))
 
-        # TODO: abandon guessing if we win
-
 
 if __name__ == '__main__':
 
@@ -62,10 +59,12 @@ if __name__ == '__main__':
 
     solver = Solver()
 
-    # with WebDriver(headless=False) as driver:
-    driver = None
+    # TODO: allow possibility of driver staying open to check analysis
+    with WebDriver() as driver:
+        main(driver, solver, args.initial_guess)
 
-    main(driver, solver, args.initial_guess)
+    # driver = WebDriver(headless=False, live=True)
+    # main(driver, solver, args.initial_guess)
 
 
 
