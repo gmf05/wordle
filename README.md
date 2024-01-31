@@ -14,7 +14,7 @@ INFO:root:TURN 1: Updated total information with feedback
 INFO:root:TURN 1: Updating remaining words...
 INFO:root:TURN 2: Updated remaining words, N=167
 INFO:root:TURN 2: Finding best guess among remaining...
-INFO:root:TURN 2: Best guess is COULD. Exp words remaining after is 7.8
+INFO:root:TURN 2: Best guess is COULD. Exp words remaining after is 6.3
 INFO:root:TURN 2: Submitting guess...
 INFO:root:TURN 2: Submission done!
 INFO:root:TURN 2: Getting feedback
@@ -23,19 +23,10 @@ INFO:root:TURN 2: Updated total information with feedback
 INFO:root:TURN 2: Updating remaining words...
 INFO:root:TURN 3: Updated remaining words, N=3
 INFO:root:TURN 3: Finding best guess among remaining...
-INFO:root:TURN 3: Best guess is PULPY. Exp words remaining after is 0.0
+INFO:root:TURN 3: Best guess is BULKY. Exp words remaining after is 1.0
 INFO:root:TURN 3: Submitting guess...
 INFO:root:TURN 3: Submission done!
 INFO:root:TURN 3: Getting feedback
-INFO:root:TURN 3: Feedback is ['P', 'U', 'L', 'P', 'Y'], ['absent', 'correct', 'correct', 'absent', 'correct']
-INFO:root:TURN 3: Updated total information with feedback
-INFO:root:TURN 3: Updating remaining words...
-INFO:root:TURN 4: Updated remaining words, N=1
-INFO:root:TURN 4: Finding best guess among remaining...
-INFO:root:TURN 4: Best guess is BULKY. Exp words remaining after is 0.0
-INFO:root:TURN 4: Submitting guess...
-INFO:root:TURN 4: Submission done!
-INFO:root:TURN 4: Getting feedback
-INFO:root:TURN 4: Feedback is ['B', 'U', 'L', 'K', 'Y'], ['correct', 'correct', 'correct', 'correct', 'correct']
-INFO:root:TURN 4: SOLVED!
+INFO:root:TURN 3: Feedback is ['B', 'U', 'L', 'K', 'Y'], ['correct', 'correct', 'correct', 'correct', 'correct']
+INFO:root:TURN 3: SOLVED!
 ```
