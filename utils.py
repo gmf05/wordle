@@ -12,12 +12,15 @@ def new_information():
 
 def update_information(information, guess, solution):
 
-    considered = list(range(5))
+    considered = set(range(5))
+    removed = []
 
     for n in considered:
         if guess[n] == solution[n]:
             information['correct'][n] = guess[n]
-            considered.remove(n)
+            removed.append(n)
+
+    considered = considered - set(removed)
 
     for n in considered:
         if guess[n] in information['saturated']:
@@ -26,7 +29,7 @@ def update_information(information, guess, solution):
             information['saturated'] = information['saturated'].union(guess[n])
             information['wrong_place'][n] = information['wrong_place'][n].union(guess[n])
         elif guess[n] in solution:
-            information['present'] = information['saturated'].union(guess[n])
+            information['present'] = information['present'].union(guess[n])
             information['wrong_place'][n] = information['wrong_place'][n].union(guess[n])
         elif guess[n] not in information['absent']:
             information['absent'] = information['absent'].union(guess[n])
@@ -48,26 +51,26 @@ def combine_information(old_info, new_info):
     return combined_info
 
 
-def information_excludes_guess(information, guess):
+def information_excludes_word(information, word):
 
     # correct-ness exclusion
     for n, char in enumerate(information['correct']):
-        if char != '' and guess[n] != char:
+        if char != '' and word[n] != char:
             return True
 
     # present exclusion -- must have any known "present" chars
     for char in information['present']:
-        if char not in guess:
+        if char not in word:
             return True
 
     # absent exclusion -- cannot have any "absent" chars
     for char in information['absent']:
-        if char in guess:
+        if char in word:
             return True
 
     # any known wrong places
     for n in range(5):
-        if guess[n] in information['wrong_place'][n]:
+        if word[n] in information['wrong_place'][n]:
             return True
 
     # otherwise we can't tell enough to exclude

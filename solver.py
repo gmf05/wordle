@@ -1,5 +1,5 @@
 from copy import deepcopy
-from wordle.utils import new_information, update_information, information_excludes_guess, update_remaining
+from wordle.utils import new_information, update_information, information_excludes_word, update_remaining
 import numpy as np
 import pandas as pd
 
@@ -13,21 +13,22 @@ class Solver:
         self._remain_words = self._all_words.copy()
         self._information = new_information()
 
-    def count_eliminated(self, information, remain_words):
-        return sum([int(information_excludes_guess(information, word)) for word in remain_words])
+    def count_eliminated_by_information(self, information):
+        return sum([int(information_excludes_word(information, word)) for word in self._remain_words])
 
     def remain_letter_frequency(self):
         return pd.value_counts([char for word in self._remain_words for char in word])
 
     def compute_best_guess_list(self, average='mean'):
         guess_stats = dict()
+        blank_stats = np.zeros(len(self._remain_words))
         for guess in self._remain_words:
-            guess_stats[guess] = np.zeros(len(self._remain_words)).copy()
+            guess_stats[guess] = blank_stats.copy()
 
             for n, solution in enumerate(self._remain_words):
                 potential_info = deepcopy(self._information)
                 potential_info = update_information(potential_info, guess, solution)
-                guess_stats[guess][n] = self.count_eliminated(potential_info, self._remain_words)
+                guess_stats[guess][n] = self.count_eliminated_by_information(potential_info)
 
         # find which word has highest avg num_eliminated
         if average == 'mean':
@@ -48,7 +49,7 @@ class Solver:
         self._information = information.copy()
 
     def update_remaining_words(self):
-        self._remain_words = [word for word in self._remain_words if not information_excludes_guess(self._information, word)]
+        self._remain_words = [word for word in self._remain_words if not information_excludes_word(self._information, word)]
 
 
 
