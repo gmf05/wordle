@@ -11,7 +11,6 @@ class WebDriver:
 
     def __init__(self, headless=True, live=False):
         self._headless = headless
-        self._turn_number = 1
 
         if live:
             options = webdriver.FirefoxOptions()
@@ -55,7 +54,7 @@ class WebDriver:
 
     def clear_word(self):
         self._driver.find_element(By.XPATH, '//body').send_keys(Keys.BACKSPACE * 5)
-        # TODO: do we want to asser tthe clear worked?
+        # TODO: do we want to assert the clear worked?
         # letters, states = self.__get_turn_feedback(self._turn_number)
         # assert letters == ['', '', '', '', ''], 'Clear failed'
 
