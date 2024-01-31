@@ -1,6 +1,6 @@
 `Solver` class in `solver.py` finds optimal Wordle paths given an initial guess (and a possible solutions list at `five_letter_words_short.txt`).
 
-Running `main.py` plays against the [current NYT Puzzle](https://www.nytimes.com/games/wordle/index.html).
+Running `main.py` plays against the [current NYT Puzzle](https://www.nytimes.com/games/wordle/index.html). Requires selenium package, Firefox web browser, and [geckodriver](https://github.com/mozilla/geckodriver/releases).
 
 ```
 python main.py --initial_guess "RAISE" --show
