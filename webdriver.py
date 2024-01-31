@@ -12,7 +12,6 @@ class WebDriver:
     def __init__(self, headless=True, live=False):
         self._headless = headless
         self._turn_number = 1
-        # TODO: game state vbls?
 
         if live:
             options = webdriver.FirefoxOptions()
@@ -24,8 +23,9 @@ class WebDriver:
         else:
             self._driver = None
 
-    # initializing in this way ensures any child browser process gets killed when we hit an error
-    # because __exit__() will be run for any __enter__()
+    # this will be forced if live is not specified / live is False
+    # this a safer way to initialize bc it ensures any child browser process gets killed when we hit an error
+    # as __exit__() will be run for any __enter__()
     def __enter__(self):
         options = webdriver.FirefoxOptions()
         options.binary_location = shutil.which('firefox')
@@ -60,8 +60,6 @@ class WebDriver:
         # assert letters == ['', '', '', '', ''], 'Clear failed'
 
     def __get_game_state(self):
-        # TODO: attach to object - and update?
-        # TODO: -- do we apply saturated here? seems like a good idea to make consistent sets of feedback
         row_divs = [self._driver.find_element(By.XPATH, '//div[@aria-label="Row {}"]'.format(str(n))) for n in range(1, 6)]
         row_tiles = [[rr for rr in r.find_elements(By.TAG_NAME, 'div') if rr.get_attribute('aria-label') is not None] for r in row_divs ]
         tile_matrix = [[t.get_attribute('aria-label') for i, t in enumerate(r)] for j, r in enumerate(row_tiles)]
