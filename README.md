@@ -3,7 +3,7 @@
 Running `main.py` plays against the [current NYT Puzzle](https://www.nytimes.com/games/wordle/index.html).
 
 ```
-python main.py --initial_guess "RAISE"
+python main.py --initial_guess "RAISE" --show
 ```
 
 ```
