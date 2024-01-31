@@ -53,6 +53,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--initial_guess", help="Select which word to start with", default="RAISE", type=str)
+    parser.add_argument("--show", help="Show browser as it solves", action="store_true")
     args = parser.parse_args()
 
     logging.getLogger().setLevel(logging.INFO)
@@ -60,7 +61,7 @@ if __name__ == '__main__':
     solver = Solver()
 
     # TODO: allow possibility of driver staying open to check analysis
-    with WebDriver() as driver:
+    with WebDriver(headless=not args.show) as driver:
         main(driver, solver, args.initial_guess)
 
     # driver = WebDriver(headless=False, live=True)
