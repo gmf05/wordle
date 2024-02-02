@@ -1,5 +1,21 @@
 `Solver` class in `solver.py` finds optimal Wordle paths given an initial guess (and a possible solutions list at `five_letter_words_short.txt`).
 
+Running `best_guess.py` will print the 25 best guesses and the expected number of words they help eliminate from the current state of the puzzle.
+
+```
+python best_guess.py --guess "RAISE" --solution "LEDGE"
+
+LUNGE    56.8
+BOULE    56.1
+BUGLE    55.7
+BULGE    55.7
+CLONE    55.6
+UNCLE    55.4
+OUNCE    55.3
+DUNCE    55.2
+ELUDE    54.8
+```
+
 Running `main.py` plays against the [current NYT Puzzle](https://www.nytimes.com/games/wordle/index.html). Requires selenium package, Firefox web browser, and [geckodriver](https://github.com/mozilla/geckodriver/releases).
 
 ```
