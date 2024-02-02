@@ -81,15 +81,19 @@ def web_feedback_to_information(letters, states):
 
     information = new_information()
 
-    considered = list(range(5))
+    considered = set(range(5))
+    removed = []
+
 
     for n in considered:
         if states[n] == 'correct':
             information['correct'][n] = letters[n]
-            considered.remove(n)
+            removed.append(n)
+
+    considered = considered - set(removed)
 
     for n in considered:
-        if states[n] == 'absent' and letters[n] in information['correct']:
+        if states[n] == 'absent' and (letters[n] in information['present'] or letters[n] in information ['correct']):
             information['wrong_place'][n] = information['wrong_place'][n].union(letters[n])
             information['saturated'] = information['saturated'].union(letters[n])
         elif states[n] == 'absent':

@@ -28,6 +28,11 @@ def main(driver, solver, initial_guess):
         # check whether we have solved it
         if states == ['correct']*5:
             logging.info('TURN {}: SOLVED!'.format(str(turn_number)))
+
+            # if we are not in headless mode, stay alive for a couple minutes to allow for click through
+            if not driver._headless:
+                time.sleep(120)
+
             break
 
         new_info = web_feedback_to_information(letters, states)
@@ -52,7 +57,7 @@ def main(driver, solver, initial_guess):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--initial_guess", help="Select which word to start with", default="RAISE", type=str)
+    parser.add_argument("--initial_guess", help="Select which word to start with", default="SLATE", type=str)
     parser.add_argument("--show", help="Show browser as it solves", action="store_true")
     args = parser.parse_args()
 
