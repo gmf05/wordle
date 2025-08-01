@@ -1,20 +1,45 @@
 import re
 import shutil
 import time
+import sys
+import os
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+# first pass at autodetecting firefox path
+def __find_path():
+    if sys.platform == "win32":
+        path = next((os.path.join(p, "Mozilla Firefox", "firefox.exe") for p in [os.getenv("PROGRAMFILES"), os.getenv("PROGRAMFILES(X86)") ] if p and os.path.exists(os.path.join(p, "Mozilla Firefox"))), None)
+    elif sys.platform == "darwin":
+        path = '/Applications/Firefox.app/Contents/MacOS/firefox'
+    else:  # Linux (including Snap version)
+        #snap_path = '/snap/firefox/current/usr/bin/firefox'
+        snap_path = '/snap/firefox/current/usr/lib/firefox/firefox'
+        path = '/usr/bin/firefox' if os.path.exists('/usr/bin/firefox') and not os.path.isdir('/usr/bin/firefox') else None
+    
+        # If not found, check for Snap's path
+        #if not path:
+        #    snap_path = '/snap/firefox/current/usr/bin/firefox'
+        #    path = snap_path if os.path.exists(snap_path) else None
+        # # TODO: snap detection needs to be better above
+        path = snap_path
+
+    return path
+
+FIREFOX_BINARY_PATH = __find_path() 
 
 
 class WebDriver:
 
-    def __init__(self, headless=True, live=False):
+    def __init__(self, headless=True, live=False, hard_mode=False):
         self._headless = headless
 
         if live:
-            options = webdriver.FirefoxOptions()
-            options.binary_location = shutil.which('firefox')
+            options = Options()
+            options.binary_location = FIREFOX_BINARY_PATH 
+            print(options.binary_location)
             # options.log = '/dev/null'  # hiding log
             if self._headless:
                 options.add_argument('--headless')
@@ -26,8 +51,10 @@ class WebDriver:
     # this a safer way to initialize bc it ensures any child browser process gets killed when we hit an error
     # as __exit__() will be run for any __enter__()
     def __enter__(self):
-        options = webdriver.FirefoxOptions()
-        options.binary_location = shutil.which('firefox')
+        options = Options()
+        options.binary_location = FIREFOX_BINARY_PATH 
+        print(options.binary_location)
+
         # options.log = '/dev/null'  # hiding log
         if self._headless:
             options.add_argument('--headless')
@@ -37,11 +64,34 @@ class WebDriver:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._driver.quit()
 
-    def start_game(self):
+    def start_game(self, hard_mode=False):
         url = 'https://www.nytimes.com/games/wordle/index.html'
         self._driver.get(url)
+   
+        # TODO: seems we can drop this with latest page changes (?)
+        try:
+            continue_button = self._driver.find_element(By.XPATH, '//button[@class="purr-blocker-card__button"]')
+            if continue_button:
+                time.sleep(1)
+                continue_button.click()
+        except:
+            pass
+
         self._driver.find_element(By.XPATH, '//button[@data-testid="Play"]').click()
-        self._driver.find_element(By.XPATH, '//button[@aria-label="Close"]').click()
+        
+        try:
+            time.sleep(1)
+            self._driver.find_element(By.XPATH, '//button[@aria-label="Close"]').click()
+        except:
+            pass
+        
+        if hard_mode:
+            time.sleep(3.5)
+            self._driver.find_element(By.XPATH, '//button[@aria-label="Settings"]').click()
+            time.sleep(1.5)
+            self._driver.find_element(By.XPATH, '//button[@aria-label="Hard Mode"]').click()
+            time.sleep(0.5)
+            self._driver.find_element(By.XPATH, '//body').send_keys(Keys.ESCAPE)
 
     def type_word(self, word):
         assert len(word) <= 5, 'Submission is too long'

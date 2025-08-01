@@ -1,13 +1,16 @@
 from copy import deepcopy
 from wordle.utils import new_information, update_information, information_excludes_word, update_remaining
+from pathlib import Path
 import numpy as np
 import pandas as pd
+
+BASE_DIR = Path(__file__).resolve().parent
 
 
 class Solver:
 
-    def __init__(self):
-        with open('five_letter_words_short.txt', 'r') as f:
+    def __init__(self, list_type='short'):
+        with open(str(BASE_DIR) + f'/five_letter_words_{list_type}.txt', 'r') as f:
             self._all_words = [w for w in f.read().split('\n') if len(w) == 5]
 
         self._remain_words = self._all_words.copy()
