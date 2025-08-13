@@ -67,6 +67,7 @@ class WebDriver:
     def start_game(self, hard_mode=False):
         url = 'https://www.nytimes.com/games/wordle/index.html'
         self._driver.get(url)
+        time.sleep(3)  # how to determine in general?
    
         # TODO: seems we can drop this with latest page changes (?)
         try:
